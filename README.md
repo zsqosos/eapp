@@ -1,21 +1,17 @@
-# eapp
+# 饿了么app
 
-> a food sell app
+## 介绍
 
-## Build Setup
+使用vuejs完成的仿饿了么web，实现了商品预览，商品详情，商家预览，添加购物等功能
 
-``` bash
-# install dependencies
-npm install
+## usage
 
-# serve with hot reload at localhost:8080
-npm run dev
+`$ git clone git@github.com:zsqosos/eapp.git`
+`$ cd eapp`
+`$ npm install`
+`$ npm run dev`
 
-# build for production with minification
-npm run build
+## LICENSE
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+MIT
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
