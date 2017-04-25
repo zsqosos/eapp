@@ -6,11 +6,12 @@
 
 ## usage
 
-
-> $ git clone git@github.com:zsqosos/eapp.git
-> $ cd eapp
-> $ npm install
-> $ npm run dev
+```
+$ git clone git@github.com:zsqosos/eapp.git
+$ cd eapp
+$ npm install
+$ npm run dev
+```
 
 ## LICENSE
 
