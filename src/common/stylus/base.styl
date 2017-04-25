@@ -13,3 +13,12 @@ html,body
     &::after
       -webkit-transform: scaleY(0.5)
       transform: scaleY(0.5)
+.clearfix
+  display: inline-block
+  &::after
+    content: '.'
+    display: block
+    height: 0
+    line-height: 0
+    clear: both
+    visibility: hidden
