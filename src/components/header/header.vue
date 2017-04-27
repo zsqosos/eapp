@@ -158,21 +158,19 @@ export default {
               bg-image("special_1")
           .text
             line-height: 12px
-            font-size: 12px
+            font-size: 10px
       .support-count
         position: absolute
-        // display: inline-block
-        // vertical-align: bottom
         right: 12px
         bottom: 14px
         padding: 0 8px
         height: 24px
-        line-height: 24px
         border-radius: 14px
         background: rgba(0,0,0,0.2)
         text-align: center
         .count
           vertical-align: top
+          line-height: 24px
           font-size: 10px
         .icon-keyboard_arrow_right
           margin-left: 2px
@@ -181,7 +179,6 @@ export default {
     .bulletin-wrapper
       position: relative
       height: 28px
-      line-height: 28px
       padding: 0 22px 0 12px
       white-space: nowrap
       overflow: hidden
@@ -192,7 +189,6 @@ export default {
         margin:8px 4px 0 0
         width: 22px
         height: 12px
-        vertical-align: top
         background-size: 22px 12px
         background-repeat: no-repeat
         bg-image('bulletin')
