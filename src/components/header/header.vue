@@ -13,8 +13,7 @@
           {{headerSeller.description}}/{{headerSeller.deliveryTime}}分钟送达
         </div>
         <div v-if="headerSeller.supports" class="support">
-          <span class="icon" :class="classMap[headerSeller.supports[0].type]"></span>
-          <span class="text">{{headerSeller.supports[0].description}}</span>
+          <span class="icon" :class="classMap[headerSeller.supports[0].type]"></span><span class="text">{{headerSeller.supports[0].description}}</span>
         </div>
       </div>
       <div v-if="headerSeller.supports" @click="showDetail" class="support-count">
@@ -53,7 +52,7 @@
               <div class="text">商家公告</div>
               <div class="line"></div>
             </div>
-            <div v-if="headerSeller.bulletin"class="bulletin">
+            <div v-if="headerSeller.bulletin" class="bulletin">
               <p class="content">{{headerSeller.bulletin}}</p>
             </div>
           </div>
@@ -138,12 +137,13 @@ export default {
           font-weight: 200
         .support
           margin: 10px 0 2px 0
+          font-size: 10px
           .icon
             display: inline-block
             width: 12px
             height: 12px
             margin-right: 4px
-            vertical-align: top
+            vertical-align: middle
             background-size: 12px 12px
             background-repeat: no-repeat
             &.discount
@@ -158,7 +158,6 @@ export default {
               bg-image("special_1")
           .text
             line-height: 12px
-            font-size: 10px
       .support-count
         position: absolute
         right: 12px
@@ -170,12 +169,12 @@ export default {
         text-align: center
         .count
           vertical-align: top
-          line-height: 24px
           font-size: 10px
+          line-height: 24px
         .icon-keyboard_arrow_right
           margin-left: 2px
-          line-height: 24px
           font-size: 10px
+          line-height: 24px
     .bulletin-wrapper
       position: relative
       height: 28px
@@ -186,16 +185,17 @@ export default {
       background: rgba(7,17,27,0.2)
       .bulletin-title
         display: inline-block
-        margin:8px 4px 0 0
+        margin-right: 4px
+        // margin:8px 4px 0 0
         width: 22px
         height: 12px
+        vertical-align: middle
         background-size: 22px 12px
         background-repeat: no-repeat
         bg-image('bulletin')
       .bulletin-text
         font-size: 10px
         line-height: 28px
-        vertical-align: top
       .icon-keyboard_arrow_right
         position: absolute
         font-size: 10px

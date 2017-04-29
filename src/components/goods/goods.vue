@@ -1,15 +1,15 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menu">
       <ul>
         <li class="menu-item" v-for="item in goods">
           <span class="text border-1px">
-                <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+            <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" ref="foods">
       <ul>
         <li v-for="item in goods" class="food-list">
           <h1 class="title">{{item.name}}</h1>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import iscroll from "iscroll"
+import bscroll from "better-scroll"
 const ERR_OK = 0;
 
 export default {
@@ -56,9 +58,19 @@ export default {
     this.$http.get('/api/goods').then(response => {
       if (response.body.errno === ERR_OK)
         this.goods = response.body.data;
+      this.$nextTick(() => {
+        this.initScroll();
+      })
     }, response => {
       console.log('error,no data');
     });
+  },
+  methods: {
+    initScroll() {
+      // this.menuScroll = new iscroll(this.$refs.menu, {});
+      this.foodsScroll = new iscroll(this.$refs.foods);
+      console.log(this.$refs);
+    }
   }
 };
 </script>
@@ -69,11 +81,12 @@ export default {
   .goods
     display: flex
     position: absolute
-    top: 174px
+    top: 175px
     bottom: 46px
     width: 100%
-    overflow: auto
+    overflow: hidden
     .menu-wrapper
+      position: relative
       flex: 0 0 80px
       width: 80px
       background: #f3f5f7
@@ -83,6 +96,8 @@ export default {
         padding: 0 12px
         font-size: 0
         color: grb(240,20,20)
+        &:last-child > .text
+          border-none()
         .text
           display: table-cell
           vertical-align: middle
@@ -112,6 +127,7 @@ export default {
         .title
           font-size: 10px
     .foods-wrapper
+      position: relative
       flex: 1
       .title
         padding-left: 14px
