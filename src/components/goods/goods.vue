@@ -2,16 +2,16 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menu">
       <ul>
-        <li class="menu-item" v-for="item in goods">
+        <li class="menu-item" v-for="(item,index) in goods" :class="{active:currentIndex==index}">
           <span class="text border-1px">
-            <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+                  <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
     <div class="foods-wrapper" ref="foods">
       <ul>
-        <li v-for="item in goods" class="food-list">
+        <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="food in item.foods" class="food-item border-1px">
@@ -25,7 +25,7 @@
                   <span class="count">月售{{food.sellCount}}份</span><span class="">好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="now">￥{{food.price}}</span>
+                  ￥<span class="now">{{food.price}}</span>
                   <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
               </div>
@@ -50,7 +50,9 @@ export default {
   },
   data() {
     return {
-      goods: []
+      goods: [],
+      foodListHeights: [0],
+      currentY: 0
     };
   },
   created() {
@@ -60,16 +62,44 @@ export default {
         this.goods = response.body.data;
       this.$nextTick(() => {
         this.initScroll();
+        this.calcHeight()
       })
     }, response => {
       console.log('error,no data');
     });
+
+  },
+  computed: {
+    currentIndex() {
+      for (let i = 0; i < this.foodListHeights.length - 1; i++) {
+        let heightBottom = this.foodListHeights[i];
+        let heightTop = this.foodListHeights[i+1];
+        if(this.currentY<heightTop&&this.currentY>=heightBottom){
+          return i;
+        }
+      }
+      return 0;
+    }
   },
   methods: {
+    //滚动插件初始化
     initScroll() {
-      // this.menuScroll = new iscroll(this.$refs.menu, {});
-      this.foodsScroll = new iscroll(this.$refs.foods);
-      console.log(this.$refs);
+      this.menuScroll = new bscroll(this.$refs.menu);
+      this.foodsScroll = new bscroll(this.$refs.foods, {
+        probeType: 3
+      });
+      this.foodsScroll.on('scroll', position => {
+        this.currentY = Math.abs(Math.round(position.y));
+      });
+    },
+    //计算每一个foodlist元素的高度，累加并输出为一个数组
+    calcHeight() {
+      let foodList = this.$refs.foods.getElementsByClassName('food-list-hook');
+      let height = 0;
+      for (let i = 0; i < foodList.length; i++) {
+        height += foodList[i].clientHeight;
+        this.foodListHeights.push(height);
+      }
     }
   }
 };
@@ -95,9 +125,17 @@ export default {
         height: 54px
         padding: 0 12px
         font-size: 0
-        color: grb(240,20,20)
+        color: rgb(20,20,20)
         &:last-child > .text
           border-none()
+        &.active
+          position: relative
+          margin-top: -1px
+          background: #fff
+          z-index: 10
+          .text
+            border-none()
+            font-weight: 700
         .text
           display: table-cell
           vertical-align: middle
@@ -139,7 +177,7 @@ export default {
         background: #f3f5f7
       .food-item
         display: flex
-        padding-bottom: 18px
+        padding-bottom: 16px
         margin: 18px
         border-1px(rgba(7,17,27,0.1))
         &:last-child
@@ -157,7 +195,7 @@ export default {
             font-size: 14px
             color: rgb(7,17,27)
           .description, .extra
-            line-height: 10px
+            line-height: 12px
             font-size: 10px
             color: rgb(147,153,159)
           .description
@@ -166,14 +204,14 @@ export default {
             .count
               margin-right: 12px
           .price
-            font-weight: 700
             line-height: 24px
+            font-size: 10px
+            font-weight: 700
+            color: rgb(240,20,20)
             .now
               margin-right: 8px
               font-size: 14px
-              color: rgb(240,20,20)
             .old
               text-decoration: line-through
-              font-size: 10px
               color: rgb(147,153,159)
 </style>
