@@ -2,9 +2,9 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menu">
       <ul>
-        <li class="menu-item" v-for="(item,index) in goods" :class="{active:currentIndex==index}">
+        <li class="menu-item" v-for="(item,index) in goods" :class="{active:currentIndex==index}" @click="scrollTo(index,$event)">
           <span class="text border-1px">
-                  <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+              <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
         </li>
       </ul>
@@ -34,12 +34,14 @@
         </li>
       </ul>
     </div>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
 import iscroll from "iscroll"
 import bscroll from "better-scroll"
+import shopcart from '../shopcart/shopcart'
 const ERR_OK = 0;
 
 export default {
@@ -73,8 +75,8 @@ export default {
     currentIndex() {
       for (let i = 0; i < this.foodListHeights.length - 1; i++) {
         let heightBottom = this.foodListHeights[i];
-        let heightTop = this.foodListHeights[i+1];
-        if(this.currentY<heightTop&&this.currentY>=heightBottom){
+        let heightTop = this.foodListHeights[i + 1];
+        if (this.currentY < heightTop && this.currentY >= heightBottom) {
           return i;
         }
       }
@@ -84,7 +86,9 @@ export default {
   methods: {
     //滚动插件初始化
     initScroll() {
-      this.menuScroll = new bscroll(this.$refs.menu);
+      this.menuScroll = new bscroll(this.$refs.menu, {
+        click: true
+      });
       this.foodsScroll = new bscroll(this.$refs.foods, {
         probeType: 3
       });
@@ -100,7 +104,17 @@ export default {
         height += foodList[i].clientHeight;
         this.foodListHeights.push(height);
       }
+    },
+    scrollTo(index, event) {
+      if (!event._constructed)
+        return;
+      let foodsList = this.$refs.foods.getElementsByClassName('food-list-hook');
+      let targetEle = foodsList[index];
+      this.foodsScroll.scrollToElement(targetEle, 300);
     }
+  },
+  components: {
+    shopcart: shopcart
   }
 };
 </script>
