@@ -73,10 +73,15 @@ export default {
   },
   computed: {
     currentIndex() {
+      // console.log(this.foodListHeights);
       for (let i = 0; i < this.foodListHeights.length - 1; i++) {
+        // console.log('我是current里的i'+i);
         let heightBottom = this.foodListHeights[i];
         let heightTop = this.foodListHeights[i + 1];
         if (this.currentY < heightTop && this.currentY >= heightBottom) {
+          // console.log(heightBottom);
+          // console.log(this.currentY);
+          // console.log(heightTop);
           return i;
         }
       }
@@ -110,7 +115,8 @@ export default {
         return;
       let foodsList = this.$refs.foods.getElementsByClassName('food-list-hook');
       let targetEle = foodsList[index];
-      this.foodsScroll.scrollToElement(targetEle, 300);
+      console.log(index);
+      this.foodsScroll.scrollToElement(targetEle,300);
     }
   },
   components: {
