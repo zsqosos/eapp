@@ -115,7 +115,7 @@ export default {
         return;
       let foodsList = this.$refs.foods.getElementsByClassName('food-list-hook');
       let targetEle = foodsList[index];
-      console.log(index);
+      // console.log(index);
       this.foodsScroll.scrollToElement(targetEle,300);
     }
   },
