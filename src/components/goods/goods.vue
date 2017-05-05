@@ -28,6 +28,9 @@
                   ￥<span class="now">{{food.price}}</span>
                   <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -42,6 +45,7 @@
 import iscroll from "iscroll"
 import bscroll from "better-scroll"
 import shopcart from '../shopcart/shopcart'
+import cartcontrol from '../cartcontrol/cartcontrol'
 const ERR_OK = 0;
 
 export default {
@@ -59,7 +63,7 @@ export default {
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-    this.$http.get('/api/goods').then(response => {
+    this.$http.get('/api/goods').then(function(response) {
       if (response.body.errno === ERR_OK)
         this.goods = response.body.data;
       this.$nextTick(() => {
@@ -91,13 +95,14 @@ export default {
   methods: {
     //滚动插件初始化
     initScroll() {
-      this.menuScroll = new bscroll(this.$refs.menu, {
+      this.menuScroll = new iscroll(this.$refs.menu, {
         click: true
       });
-      this.foodsScroll = new bscroll(this.$refs.foods, {
+      this.foodsScroll = new iscroll(this.$refs.foods, {
+        click: true,
         probeType: 3
       });
-      this.foodsScroll.on('scroll', position => {
+      this.foodsScroll.on('scroll', function(position) {
         this.currentY = Math.abs(Math.round(position.y));
       });
     },
@@ -120,7 +125,8 @@ export default {
     }
   },
   components: {
-    shopcart: shopcart
+    shopcart,
+    cartcontrol
   }
 };
 </script>
@@ -234,4 +240,8 @@ export default {
             .old
               text-decoration: line-through
               color: rgb(147,153,159)
+          .cartcontrol-wrapper
+            position: absolute
+            right: 0
+            bottom: 12px
 </style>
