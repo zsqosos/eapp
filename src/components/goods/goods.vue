@@ -2,9 +2,9 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menu">
       <ul>
-        <li class="menu-item" v-for="(item,index) in goods" :class="{active:currentIndex==index}" @click="scrollTo(index,$event)">
+        <li class="menu-item" v-for="(item,index) in goods" :class="{active:currentIndex===index}" @click="scrollTo(index)">
           <span class="text border-1px">
-              <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+            <span v-if="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
           </span>
         </li>
       </ul>
@@ -22,10 +22,12 @@
                 <h2 class="name">{{food.name}}</h2>
                 <p class="description">{{food.description}}</p>
                 <div class="extra">
-                  <span class="count">月售{{food.sellCount}}份</span><span class="">好评率{{food.rating}}%</span>
+                  <span class="count">月售{{food.sellCount}}份</span>
+                  <span class="">好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  ￥<span class="now">{{food.price}}</span>
+                  ￥
+                  <span class="now">{{food.price}}</span>
                   <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
@@ -42,8 +44,8 @@
 </template>
 
 <script>
-import iscroll from "iscroll"
-import bscroll from "better-scroll"
+import iscroll from "../../../node_modules/iscroll/build/iscroll-probe"
+// import bscroll from "better-scroll"
 import shopcart from '../shopcart/shopcart'
 import cartcontrol from '../cartcontrol/cartcontrol'
 const ERR_OK = 0;
@@ -57,13 +59,13 @@ export default {
   data() {
     return {
       goods: [],
-      foodListHeights: [0],
+      foodListHeights: [],
       currentY: 0
     };
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-    this.$http.get('/api/goods').then(function(response) {
+    this.$http.get('/api/goods').then(function (response) {
       if (response.body.errno === ERR_OK)
         this.goods = response.body.data;
       this.$nextTick(() => {
@@ -77,19 +79,19 @@ export default {
   },
   computed: {
     currentIndex() {
-      // console.log(this.foodListHeights);
       for (let i = 0; i < this.foodListHeights.length - 1; i++) {
-        // console.log('我是current里的i'+i);
         let heightBottom = this.foodListHeights[i];
         let heightTop = this.foodListHeights[i + 1];
+        //对滑动后currentY值不足的情况进行修正
+        let diff = Math.abs(this.currentY - heightTop);
+        if (diff < 5) {
+          this.currentY = heightTop;
+        }
+        //判断currentY当前所在的区间
         if (this.currentY < heightTop && this.currentY >= heightBottom) {
-          // console.log(heightBottom);
-          // console.log(this.currentY);
-          // console.log(heightTop);
           return i;
         }
       }
-      return 0;
     }
   },
   methods: {
@@ -99,29 +101,27 @@ export default {
         click: true
       });
       this.foodsScroll = new iscroll(this.$refs.foods, {
-        click: true,
-        probeType: 3
+        probeType: 3,
+        click: true
       });
-      this.foodsScroll.on('scroll', function(position) {
-        this.currentY = Math.abs(Math.round(position.y));
+      let _this = this;
+      this.foodsScroll.on('scroll', function () {
+        _this.currentY = Math.abs(Math.round(this.y));
       });
     },
     //计算每一个foodlist元素的高度，累加并输出为一个数组
     calcHeight() {
       let foodList = this.$refs.foods.getElementsByClassName('food-list-hook');
       let height = 0;
+      this.foodListHeights.push(height);
       for (let i = 0; i < foodList.length; i++) {
         height += foodList[i].clientHeight;
         this.foodListHeights.push(height);
       }
     },
-    scrollTo(index, event) {
-      if (!event._constructed)
-        return;
-      let foodsList = this.$refs.foods.getElementsByClassName('food-list-hook');
-      let targetEle = foodsList[index];
-      // console.log(index);
-      this.foodsScroll.scrollToElement(targetEle,300);
+    scrollTo(index) {
+      let target = this.foodListHeights[index];
+      this.foodsScroll.scrollTo(0, -target, 300);
     }
   },
   components: {
@@ -142,6 +142,7 @@ export default {
     width: 100%
     overflow: hidden
     .menu-wrapper
+      touch-action: none
       position: relative
       flex: 0 0 80px
       width: 80px
@@ -191,6 +192,7 @@ export default {
         .title
           font-size: 10px
     .foods-wrapper
+      touch-action: none
       position: relative
       flex: 1
       .title

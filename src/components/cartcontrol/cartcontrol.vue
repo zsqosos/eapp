@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import Vue from 'Vue';
+
 export default {
   props: {
     food: {
@@ -23,12 +23,10 @@ export default {
         return;
       }
       if (!this.food.count) {
-        // this.food.count = 1;
         this.$set(this.food, 'count', 1);
       } else {
         this.food.count++;
       }
-      console.log(this.food.count);
     },
     decreaseCart(event) {
       if (!event._constructed) {
@@ -37,7 +35,6 @@ export default {
       if (this.food.count) {
         this.food.count--;
       }
-      console.log(this.food.count);
     }
   }
 }

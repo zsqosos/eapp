@@ -9,7 +9,7 @@ import './common/stylus/index.styl'
 Vue.use(resource);
 
 Vue.config.productionTip = false;
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
