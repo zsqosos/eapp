@@ -186,7 +186,6 @@ export default {
       .bulletin-title
         display: inline-block
         margin-right: 4px
-        // margin:8px 4px 0 0
         width: 22px
         height: 12px
         vertical-align: middle

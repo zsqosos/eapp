@@ -26,8 +26,7 @@
                   <span class="">好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  ￥
-                  <span class="now">{{food.price}}</span>
+                  ￥<span class="now">{{food.price}}</span>
                   <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
@@ -39,13 +38,13 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
 import iscroll from "../../../node_modules/iscroll/build/iscroll-probe"
-// import bscroll from "better-scroll"
+import bscroll from "better-scroll"
 import shopcart from '../shopcart/shopcart'
 import cartcontrol from '../cartcontrol/cartcontrol'
 const ERR_OK = 0;
@@ -75,7 +74,6 @@ export default {
     }, response => {
       console.log('error,no data');
     });
-
   },
   computed: {
     currentIndex() {
@@ -92,17 +90,28 @@ export default {
           return i;
         }
       }
+    },
+    selectFoods() {
+      let foods = [];
+      this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          if(food.count) {
+            foods.push(food);
+          }
+        })
+      });
+      return foods;
     }
   },
   methods: {
     //滚动插件初始化
     initScroll() {
       this.menuScroll = new iscroll(this.$refs.menu, {
-        click: true
+        // click: true
       });
       this.foodsScroll = new iscroll(this.$refs.foods, {
         probeType: 3,
-        click: true
+        // click: true
       });
       let _this = this;
       this.foodsScroll.on('scroll', function () {
@@ -120,6 +129,7 @@ export default {
       }
     },
     scrollTo(index) {
+      console.log(index);
       let target = this.foodListHeights[index];
       this.foodsScroll.scrollTo(0, -target, 300);
     }

@@ -1,8 +1,12 @@
 <template>
   <div class="cartcontrol">
-    <div v-show="food.count>0" class="decrease icon-remove_circle_outline" @click="decreaseCart"></div>
-    <div v-show="food.count>0" class="count">{{food.count}}</div>
-    <div class="add icon-add_circle" @click="addCart"></div>
+    <transition name="move">
+      <div v-show="food.count>0" class="decrease" @click="decreaseCart">
+        <span class="inner icon-remove_circle_outline"></span>
+      </div>
+    </transition>
+      <div v-show="food.count>0" class="count">{{food.count}}</div>
+    <div class="add icon-add_circle" @click="addCart($event)"></div>
   </div>
 </template>
 <script>
@@ -19,19 +23,20 @@ export default {
   },
   methods: {
     addCart(event) {
-      if (!event._constructed) {
-        return;
-      }
+      // if (!event._constructed) {
+      //   return;
+      // }
       if (!this.food.count) {
         this.$set(this.food, 'count', 1);
       } else {
         this.food.count++;
       }
+      this.$root.$emit('add_cart',event.target);
     },
     decreaseCart(event) {
-      if (!event._constructed) {
-        return;
-      }
+      // if (!event._constructed) {
+      //   return;
+      // }
       if (this.food.count) {
         this.food.count--;
       }
@@ -42,12 +47,22 @@ export default {
 <style lang="stylus" scoped>
   .cartcontrol
     font-size: 0
-    .decrease,.add
+    .decrease
       display: inline-block
       padding: 6px
-      line-height: 24px
-      font-size: 24px
-      color: rgb(0,160,220)
+      transition: all 0.4s linear
+      .inner
+        display: inline-block
+        line-height: 24px
+        font-size: 24px
+        color: rgb(0,160,220)
+        transition: all 0.5s linear
+      //只需写进入时的状态和离开完成后的状态
+      &.move-enter,&.move-leave-active
+        opacity: 0
+        transform: translate3d(24px,0,0)
+        .inner
+          transform: rotate(180deg)
     .count
       display: inline-block
       vertical-align: top
@@ -57,4 +72,10 @@ export default {
       text-align: center
       font-size: 10px
       color: rgb(147,153,159)
+    .add
+      display: inline-block
+      padding: 6px
+      line-height: 24px
+      font-size: 24px
+      color: rgb(0,160,220)
 </style>
