@@ -308,9 +308,9 @@ export default {
             background: #00b43c
             color: #fff
     .ball-container
-      .ball  
+      .ball
         position: fixed
-        bottom: 22px 
+        bottom: 22px
         left: 32px
         z-index: 150
         transition: all 0.4s cubic-bezier(.34,-0.56,.73,.62)

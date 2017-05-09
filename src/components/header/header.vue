@@ -214,7 +214,7 @@ export default {
       left: 0
       width: 100%
       height: 100%
-      z-index: 50
+      z-index: 100
       overflow: auto
       background: rgba(7,17,27,0.8)
       transition: all 0.5s

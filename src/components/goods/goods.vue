@@ -140,7 +140,6 @@ export default {
     },
     selectFood(food) {
       this.selectedFood = food;
-      console.log(this.$refs);
       this.$refs.food.show();
     }
   },
