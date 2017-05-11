@@ -113,11 +113,11 @@ export default {
     //滚动插件初始化
     initScroll() {
       this.menuScroll = new iscroll(this.$refs.menu, {
-        // click: true
+        click: true
       });
       this.foodsScroll = new iscroll(this.$refs.foods, {
         probeType: 3,
-        // click: true
+        click: true
       });
       let _this = this;
       this.foodsScroll.on('scroll', function () {
