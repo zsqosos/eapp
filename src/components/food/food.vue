@@ -35,6 +35,21 @@
         <div class="rating">
           <h1 class="title">商品评价</h1>
           <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <div class="rating-wrapper">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li class="rating-item" v-for="rating in food.ratings">
+                <div class="user">
+                  <span class="name">{{rating.username}}</span>
+                  <img class="avatar" width="12" height="12" :src="rating.avatar">
+                </div>
+                <div class="time">{{rating.rateTime}}</div>
+                <p class="text">
+                  <span :class="{'icon-thumb_up':rating.rateType===1,'icon-thumb_down':rating.rateType===0}">{{rating}}</span>{{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class=""></div>
+          </div>
         </div>
       </div>
     </div>
@@ -92,6 +107,9 @@ export default {
       }
       this.$root.$emit('add_cart', event.target);
     }
+  },
+  created() {
+    console.log(this.food);
   },
   components: {
     cartcontrol,

@@ -1,17 +1,17 @@
 <template>
   <div class="ratingselect">
     <div class="rating-type border-1px">
-      <span @click.stop.prevent="select(0)" class="block positive" :class="{active:selectType===0}">{{desc.all}}
+      <span @click.stop.prevent="select(0)" class="block positive" :class="{active:selectTypeData===0}">{{desc.all}}
         <span class="count">{{ratings.length}}</span>
       </span>
-      <span @click.stop.prevent="select(1)" class="block positive" :class="{active:selectType===1}">{{desc.positive}}
+      <span @click.stop.prevent="select(1)" class="block positive" :class="{active:selectTypeData===1}">{{desc.positive}}
         <span class="count">{{positives.length}}</span>
       </span>
-      <span @click.stop.prevent="select(2)" class="block negative" :class="{active:selectType===2}">{{desc.negative}}
+      <span @click.stop.prevent="select(2)" class="block negative" :class="{active:selectTypeData===2}">{{desc.negative}}
         <span class="count">{{negatives.length}}</span>
       </span>
     </div>
-    <div class="switch" :class="{on:onlyContent}" @click.stop.prevent="toggleSwitch">
+    <div class="switch" :class="{on:onlyContentData}" @click.stop.prevent="toggleSwitch">
       <span class="icon-check_circle"></span>
       <span class="text">只看有内容的评价</span>
     </div>
@@ -49,12 +49,18 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      onlyContentData: this.onlyContent,
+      selectTypeData: this.selectType
+    }
+  },
   methods: {
     select(type) {
-      this.selectType = type;
+      this.selectTypeData = type;
     },
     toggleSwitch() {
-      this.onlyContent = !this.onlyContent;
+      this.onlyContentData = !this.onlyContentData;
     }
   },
   computed: {

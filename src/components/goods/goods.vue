@@ -106,6 +106,7 @@ export default {
           }
         })
       });
+      console.log(foods);
       return foods;
     }
   },
