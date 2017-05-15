@@ -4,7 +4,7 @@
       <div class="food-content">
         <div class="image-wrapper">
           <img class="img" :src="food.image">
-          <div class="back" @click="back">
+          <div class="back" @click.stop.prevent="back">
             <i class="icon-arrow_lift"></i>
           </div>
         </div>
@@ -34,21 +34,21 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <ratingselect @onlyContentChange="onlyContentChange" @typeChange="typeChange" :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
           <div class="rating-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
-              <li class="rating-item" v-for="rating in food.ratings">
+              <li class="rating-item" v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings">
                 <div class="user">
                   <span class="name">{{rating.username}}</span>
                   <img class="avatar" width="12" height="12" :src="rating.avatar">
                 </div>
-                <div class="time">{{rating.rateTime}}</div>
+                <div class="time">{{rating.rateTime | format}}</div>
                 <p class="text">
-                  <span :class="{'icon-thumb_up':rating.rateType===1,'icon-thumb_down':rating.rateType===0}">{{rating}}</span>{{rating.text}}
+                  <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
                 </p>
               </li>
             </ul>
-            <div class=""></div>
+            <div v-show="!food.ratings || food.ratings.length===0" class="no-rating">暂无评价</div>
           </div>
         </div>
       </div>
@@ -58,20 +58,21 @@
 
 <script>
 import iscroll from 'iscroll'
+import {formatDate} from '../../common/js/formatDate'
 import cartcontrol from '../cartcontrol/cartcontrol'
 import split from '../split/split'
 import ratingselect from '../ratingselect/ratingselect'
 
-const ALL = 0;
-const POSITIVE = 1;
-const NEGATIVE = 2;
+const ALL = 2;
+const POSITIVE = 0;
+const NEGATIVE = 1;
 
 export default {
   data() {
     return {
       foodShow: false,
       selectType: ALL,
-      onlyContent: true,
+      onlyContent: false,
       desc: {
         all: '全部',
         positive: '推荐',
@@ -88,7 +89,7 @@ export default {
     show() {
       this.foodShow = true;
       this.selectType = ALL;
-      this.onlyContent = true;
+      this.onlyContent = false;
       this.$nextTick(function () {
         if (!this.scroll) {
           this.scroll = new iscroll(this.$refs.food);
@@ -106,10 +107,38 @@ export default {
         this.food.count++;
       }
       this.$root.$emit('add_cart', event.target);
+    },
+    needShow(type, text) {
+      if (this.foodShow === false) {
+        return;
+      }
+      if (this.onlyContent && !text) {
+        return false;
+      }
+      if (this.selectType === ALL) {
+        return true;
+      } else {
+        return this.selectType === type;
+      }
+    },
+    typeChange(type) {
+      this.selectType = type;
+      this.$nextTick(() => {
+        this.scroll.refresh();
+      })
+    },
+    onlyContentChange() {
+      this.onlyContent = !this.onlyContent;
+      this.$nextTick(() => {
+        this.scroll.refresh();
+      })
     }
   },
-  created() {
-    console.log(this.food);
+  filters: {
+    format(time) {
+      let date = new Date(time);
+      return formatDate(date,'yyyy-MM-dd hh:mm');
+    }
   },
   components: {
     cartcontrol,
@@ -120,6 +149,8 @@ export default {
 </script>
 
 <style lang="stylus">
+@import "../../common/stylus/mixin.styl"
+
   .food
     touch-action: none
     position: fixed
@@ -221,5 +252,45 @@ export default {
           line-height: 14px
           font-size: 14px
           color: rgb(7,17,27,)
-
+        .rating-wrapper
+          padding: 0 18px
+          .rating-item
+            position: relative
+            padding: 16px 0
+            border-1px(rgba(7,17,27,0.1))
+            .user
+              position: absolute
+              right: 0
+              top: 16px
+              line-height: 12px
+              font-size: 0
+              .name
+                display: inline-block
+                margin-right: 6px
+                vertical-align: top
+                font-size: 10px
+                color: rgb(147,157,159)
+              .avatar
+                border-radius: 50%
+            .time
+              margin-bottom: 6px
+              line-height: 12px
+              font-size: 10px
+              color: rgb(147,157,159)
+            .text
+              line-height: 16px
+              font-size: 12px
+              color: rgb(7,17,27)
+              .icon-thumb_up,.icon-thumb_down
+                margin-right: 4px
+                line-height: 16px
+                font-size: 12px
+              .icon-thumb_up
+                color: rgb(0,160,220)
+              .icon-thumb_down
+                color: rgb(147,153,159)
+          .no-rating
+            padding: 16px 0
+            font-size: 12px
+            color: rgb(147,153,159)
 </style>
