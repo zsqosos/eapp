@@ -67,7 +67,7 @@ export default {
           margin: 0
     &.star_36
       .star-item
-        margin-right: 16px
+        margin-right: 6px
         width: 15px
         height: 15px
         background-size: 15px 15px
