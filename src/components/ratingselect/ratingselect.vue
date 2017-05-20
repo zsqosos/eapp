@@ -92,7 +92,7 @@ export default {
           color: #fff
         .count
           margin-left: 2px
-          font-size: 8px
+          font-size: 10px
         &.positive
           background: rgba(0,160,220,0.2)
           &.active
@@ -100,7 +100,7 @@ export default {
         &.negative
           background: rgba(77,85,93,0.2)
           &.active
-            background: rgb(77,85,93)
+            background: rgba(77,85,93,0.5)
     .switch
       padding: 12px 18px
       line-height: 24px
