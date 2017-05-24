@@ -27,6 +27,12 @@
         </ul>
       </div>
       <split></split>
+      <div class="bulletin">
+        <h1 class="title">商家公告</h1>
+        <div class="content-wrapper">
+          <p class="content">{{seller.bulletin}}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,4 +103,18 @@ export default {
             color: rgb(7,17,27)
             .stress
               font-size: 24px
+    .bulletin
+      padding: 18px 18px 0 18px
+      .title
+        margin-bottom: 8px
+        line-height: 14px
+        color: rgb(7,17,27)
+        font-size: 14px
+      .content-wrapper
+        padding: 0 12px 16px 12px
+        border-1px(rgba(7,17,27,0.1))
+        .content
+          line-height: 24px
+          font-size: 12px
+          color: rgb(240,20,20)
 </style>
