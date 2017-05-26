@@ -2,36 +2,43 @@
   <div class="app">
     <v-header :header-seller="seller"></v-header>
     <div class="tab border-1px">
-      <div class="tab-item"><router-link to="/goods">商品</router-link></div>
-      <div class="tab-item"><router-link to="/ratings">评论</router-link></div>
-      <div class="tab-item"><router-link to="/seller">商家</router-link></div>
+      <div class="tab-item">
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/ratings">评论</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/seller">商家</router-link>
+      </div>
     </div>
-    <!--<div>{{this.seller}}</div>-->
-    <router-view :seller="seller"></router-view>
+    <keep-alive>
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-  import  header from './components/header/header';
-  const ERR_OK = 0;
-  export default {
-    components: {
-      'v-header': header
-    },
-    data () {
-      return {
-        seller: {}
-      }
-    },
-    created() {
-      this.$http.get('/api/seller').then(response => {
-        if(response.body.errno === ERR_OK)
-          this.seller = response.body.data;
-      },response => {
-        console.log('error,no data');
-      })
+import header from './components/header/header';
+const ERR_OK = 0;
+export default {
+  components: {
+    'v-header': header
+  },
+  data() {
+    return {
+      seller: {}
     }
+  },
+  created() {
+    this.$http.get('/api/seller').then(response => {
+      if (response.body.errno === ERR_OK)
+        this.seller = response.body.data;
+    }, response => {
+      console.log('error,no data');
+    })
   }
+}
 </script>
 
 <style lang="stylus">

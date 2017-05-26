@@ -62,6 +62,7 @@
         </ul>
       </div>
     </div>
+    <shopcart></shopcart>
   </div>
 </template>
 
@@ -69,6 +70,7 @@
 import iscroll from 'iscroll'
 import star from '../star/star'
 import split from '../split/split'
+import shopcart from '../shopcart/shopcart'
 export default {
   props: {
     seller: {
@@ -134,7 +136,8 @@ export default {
   },
   components: {
     star,
-    split
+    split,
+    shopcart
   }
 };
 </script>
@@ -146,7 +149,7 @@ export default {
     position: absolute
     touch-action: none
     top: 174px
-    bottom: 0
+    bottom: 48px
     left: 0
     width: 100%
     overflow: hidden

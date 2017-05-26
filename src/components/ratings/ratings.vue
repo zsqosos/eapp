@@ -49,11 +49,13 @@
         </ul>
       </div>
     </div>
+    <shopcart></shopcart>
   </div>
 </template>
 <script>
 import iscroll from 'iscroll'
 import star from '../star/star'
+import shopcart from '../shopcart/shopcart'
 import split from '../split/split'
 import ratingselect from '../ratingselect/ratingselect'
 import { formatDate } from '../../common/js/formatDate'
@@ -121,7 +123,8 @@ export default {
   components: {
     star,
     split,
-    ratingselect
+    ratingselect,
+    shopcart
   }
 };
 </script>
@@ -131,7 +134,7 @@ export default {
     touch-action: none
     position: absolute
     top: 174px
-    bottom: 0
+    bottom: 48px
     left: 0
     width: 100%
     overflow: hidden
