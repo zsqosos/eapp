@@ -79,7 +79,14 @@ export default {
   },
   data() {
     return {
-      favorite: false
+      favorite: (() => {
+        if (!window.localStorage.favorite) {
+          return false;
+        } else {
+          let favorite = JSON.parse(localStorage.favorite);
+          return favorite || false;
+        }
+      })()
     }
   },
   computed: {
@@ -132,6 +139,8 @@ export default {
     },
     toggleFavorite() {
       this.favorite = !this.favorite;
+      let storage = window.localStorage;
+      storage.favorite = this.favorite;
     }
   },
   components: {
