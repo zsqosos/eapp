@@ -64,7 +64,7 @@ export default {
       goods: [],
       foodListHeights: [],
       currentY: 0,
-      selectedFood: {}
+      selectedFood: {},
     };
   },
   created() {
@@ -74,16 +74,14 @@ export default {
         this.goods = response.body.data;
       this.$nextTick(() => {
         this.initScroll();
-        this.calcHeight()
+        this.calcHeight();
       })
     }, response => {
       console.log('error,no data');
     });
   },
   watch: {
-    selectFoods: function () {
-      this.$root.$emit('foodsChange', this.selectFoods);
-    }
+    selectFoods: function(){}
   },
   computed: {
     currentIndex() {
@@ -110,7 +108,10 @@ export default {
           }
         })
       });
-      return foods;
+      this.$store.commit({
+        type:'changeFoods',
+        foodList: foods
+      });
     }
   },
   methods: {

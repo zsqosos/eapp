@@ -15,7 +15,7 @@
     <keep-alive>
       <router-view :seller="seller"></router-view>
     </keep-alive>
-    <shopcart v-bind:select-foods="foods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectedFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -32,13 +32,7 @@ export default {
   data() {
     return {
       seller: {},
-      foods: []
     }
-  },
-  watch: {
-    a: function () {
-      console.log(1);
-    },
   },
   created() {
     this.$http.get('/api/seller').then(response => {
@@ -47,7 +41,11 @@ export default {
     }, response => {
       console.log('error,no data');
     });
-    this.$root.$on('foodsChange', this.change);
+  },
+  computed: {
+    selectedFoods() {
+      return this.$store.state.foods;
+    }
   },
   methods: {
     change (food) {

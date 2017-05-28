@@ -148,12 +148,12 @@ export default {
     }
   },
   methods: {
-    drop(el) {
+    drop() {
       for (let i = 0; i < this.balls.length; i++) {
         let ball = this.balls[i];
         if (!ball.show) {
           ball.show = true;
-          ball.el = el;
+          ball.el = this.$store.state.ballEle;
           this.dropBalls.push(ball);
           return;
         }

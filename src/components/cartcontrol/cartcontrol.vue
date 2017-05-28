@@ -31,7 +31,11 @@ export default {
       } else {
         this.food.count++;
       }
-      this.$root.$emit('add_cart',event.target);
+      this.$store.commit({
+        type: 'initBallEle',
+        el: event.target
+      })
+      this.$root.$emit('add_cart');
     },
     decreaseCart(event) {
       // if (!event._constructed) {
