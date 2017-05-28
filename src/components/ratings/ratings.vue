@@ -78,8 +78,8 @@ export default {
   },
   created() {
     this.$http.get('api/ratings').then(response => {
-      if (response.body.errno === ERR_OK)
-        this.ratings = response.body.data;
+      if (response.data.errno === ERR_OK)
+        this.ratings = response.data.data;
       this.$nextTick(() => {
         this.scroll = new iscroll(this.$refs.ratings, {
           click: true

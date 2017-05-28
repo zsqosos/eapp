@@ -68,20 +68,22 @@ export default {
     };
   },
   created() {
+    let _this = this;
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$http.get('/api/goods').then(function (response) {
-      if (response.body.errno === ERR_OK)
-        this.goods = response.body.data;
-      this.$nextTick(() => {
-        this.initScroll();
-        this.calcHeight();
+      if (response.data.errno === ERR_OK) {
+        _this.goods = response.data.data;
+      }
+      _this.$nextTick(() => {
+        _this.initScroll();
+        _this.calcHeight();
       })
     }, response => {
       console.log('error,no data');
     });
   },
   watch: {
-    selectFoods: function(){}
+    selectFoods: function () { }
   },
   computed: {
     currentIndex() {
@@ -109,7 +111,7 @@ export default {
         })
       });
       this.$store.commit({
-        type:'changeFoods',
+        type: 'changeFoods',
         foodList: foods
       });
     }

@@ -4,10 +4,10 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import store from './store'
-import resource from 'vue-resource';
+import axios from 'axios'
 import './common/stylus/index.styl'
 
-Vue.use(resource);
+Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 
