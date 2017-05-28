@@ -40,7 +40,6 @@
           </li>
         </ul>
       </div>
-      <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
     </div>
     <food :food="selectedFood" ref="food"></food>
   </div>
@@ -80,6 +79,11 @@ export default {
     }, response => {
       console.log('error,no data');
     });
+  },
+  watch: {
+    selectFoods: function () {
+      this.$root.$emit('foodsChange', this.selectFoods);
+    }
   },
   computed: {
     currentIndex() {

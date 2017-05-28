@@ -15,20 +15,30 @@
     <keep-alive>
       <router-view :seller="seller"></router-view>
     </keep-alive>
+    <shopcart v-bind:select-foods="foods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
 import header from './components/header/header';
+import shopcart from './components/shopcart/shopcart'
+
 const ERR_OK = 0;
 export default {
   components: {
-    'v-header': header
+    'v-header': header,
+    shopcart
   },
   data() {
     return {
-      seller: {}
+      seller: {},
+      foods: []
     }
+  },
+  watch: {
+    a: function () {
+      console.log(1);
+    },
   },
   created() {
     this.$http.get('/api/seller').then(response => {
@@ -36,7 +46,13 @@ export default {
         this.seller = response.body.data;
     }, response => {
       console.log('error,no data');
-    })
+    });
+    this.$root.$on('foodsChange', this.change);
+  },
+  methods: {
+    change (food) {
+      this.foods = food;
+    }
   }
 }
 </script>
