@@ -62,7 +62,6 @@
         </ul>
       </div>
     </div>
-    <!--<shopcart :min-price="seller.minPrice" :delivery-price="seller.deliveryPrice"></shopcart>-->
   </div>
 </template>
 
