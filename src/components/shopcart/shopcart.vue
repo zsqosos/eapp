@@ -138,7 +138,9 @@ export default {
       if (show) {
         this.$nextTick(function () {
           if (!this.scroll) {
-            this.scroll = new iscroll(this.$refs['list-content'])
+            this.scroll = new iscroll(this.$refs['list-content'],{
+              click: true
+            })
           } else {
             this.scroll.refresh();
           }
@@ -163,6 +165,7 @@ export default {
       for (let i = 0; i < this.balls.length; i++) {
         let ball = this.balls[i]
         if (ball.show) {
+          console.log(ball);
           let rect = ball.el.getBoundingClientRect();
           let x = rect.left - 22;
           let y = -(window.innerHeight - rect.top - 48)

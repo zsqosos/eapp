@@ -92,7 +92,9 @@ export default {
       this.onlyContent = false;
       this.$nextTick(function () {
         if (!this.scroll) {
-          this.scroll = new iscroll(this.$refs.food);
+          this.scroll = new iscroll(this.$refs.food,{
+            click: true
+          });
         }
         this.scroll.refresh();
       });
@@ -106,7 +108,11 @@ export default {
       } else {
         this.food.count++;
       }
-      this.$root.$emit('add_cart', event.target);
+      this.$store.commit({
+        type: 'initBallEle',
+        el: event.target
+      });
+      this.$root.$emit('add_cart');
     },
     needShow(type, text) {
       if (this.foodShow === false) {
